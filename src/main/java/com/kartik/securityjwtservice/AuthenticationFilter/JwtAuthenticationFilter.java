@@ -1,4 +1,4 @@
-package com.kartik.securityjwtservice.config;
+package com.kartik.securityjwtservice.AuthenticationFilter;
 
 import com.kartik.securityjwtservice.service.JwtService;
 import jakarta.servlet.FilterChain;
