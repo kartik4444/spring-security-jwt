@@ -2,6 +2,7 @@ package com.kartik.securityjwtservice.service;
 
 
 import com.kartik.securityjwtservice.model.*;
+import com.kartik.securityjwtservice.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final JwtService jwtService;
+
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -26,6 +29,9 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(register.getPassword()))
                 .role(Role.USER)
                 .build();
+        userRepository.save(user);
+        System.out.println("New user registered :"+user);
+
         String jwtToken= jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
@@ -40,6 +46,8 @@ public class AuthenticationService {
                         authentication.getPassword())
 
         );
+
+        System.out.println("Authentication success !");
         User user = User.builder()
                 .email(authentication.getEmail())
                 .build();
@@ -48,6 +56,5 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .jwtToken(jwtToken)
                 .build();
-
     }
 }
